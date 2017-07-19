@@ -32,17 +32,17 @@ namespace StockyConsole
             //    //        continue;
             //}
 
-            //unzip
-            foreach (var date in allweekdays)
-            {
-                objDownloader.Unzip(date);
-            }
+            ////unzip
+            //foreach (var date in allweekdays)
+            //{
+            //    objDownloader.Unzip(date);
+            //}
 
-            //read file and insert data
-            foreach (var date in allweekdays)
-            {
-                objDownloader.ReadFileAndInsertData(date);
-            }
+            ////read file and insert data
+            //foreach (var date in allweekdays)
+            //{
+            //    objDownloader.ReadFileAndInsertData(date);
+            //}
             
 
 
