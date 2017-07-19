@@ -1,0 +1,8 @@
+c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\StockyConsole.exe.config
+c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\StockyConsole.exe
+c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\StockyConsole.pdb
+c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\obj\Debug\StockyConsole.csprojResolveAssemblyReference.cache
+c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\obj\Debug\StockyConsole.exe
+c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\obj\Debug\StockyConsole.pdb
+C:\Users\Swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\MySql.Data.dll
+C:\Users\Swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\MySql.Data.xml
