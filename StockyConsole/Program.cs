@@ -65,7 +65,7 @@ namespace StockyConsole
                 {
                     case 'q':
                         return;
-                    case 'c':
+                    case 'z':
                         CleanScreen();
                         break;
                     case 'i':
@@ -76,6 +76,9 @@ namespace StockyConsole
                         break;
                     case 'b':
                         OpenCandleStickPattern(CandleStickPattern.MyChoice2Negative3Postive, date_2, date_1, date0, date1, date2);
+                        break;
+                    case 'c':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice4Negative1Postive, date_2, date_1, date0, date1, date2);
                         break;
 
                 }
@@ -97,6 +100,9 @@ namespace StockyConsole
                 case CandleStickPattern.MyChoice2Negative3Postive:
                     stockSymbols = new DatabaseProcessor().MyChoice2Negative3Postive(date_2, date_1, date0, date1, date2);
                     break;
+                case CandleStickPattern.MyChoice4Negative1Postive:
+                    stockSymbols = new DatabaseProcessor().MyChoice4Negative1Postive(date_2, date_1, date0, date1, date2);
+                    break;
 
 
             }
@@ -112,8 +118,9 @@ namespace StockyConsole
             Console.WriteLine("i = Inverted Hammer");
             Console.WriteLine("a = 3 negative 2 positive");
             Console.WriteLine("b = 2 negative 3 positive");
+            Console.WriteLine("c = 4 negative 1 positive");
             Console.WriteLine("==============");
-            Console.WriteLine("c = clear screen");
+            Console.WriteLine("z = clear screen");
             Console.WriteLine("q = quit or exit");
         }
 
@@ -194,5 +201,6 @@ namespace StockyConsole
 
         MyChoice3Negative2Postive = 101,
         MyChoice2Negative3Postive = 102,
+        MyChoice4Negative1Postive = 103,
     }
 }

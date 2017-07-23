@@ -194,5 +194,25 @@ namespace StockyConsole
                                + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
             return GetResult(sqlCommand);
         }
+
+
+        internal List<string> MyChoice4Negative1Postive(string date_2, string date_1, string date0, string date1, string date2)
+        {
+            string sqlCommand = "select distinct eod2.SYMBOL, eod2.CLOSE_PRICE * eod2.NET_TRDQTY from eod eod_2, eod eod_1, eod eod0, eod eod1, eod eod2 "
+                              + " where eod_2.SYMBOL = eod_1.SYMBOL and eod_1.SYMBOL = eod0.SYMBOL and eod0.SYMBOL = eod1.SYMBOL and eod1.SYMBOL = eod2.SYMBOL"
+                              + " and eod_2.DATE = '" + date_2 + "'"
+                              + " and eod_1.DATE = '" + date_1 + "'"
+                              + " and eod0.DATE = '" + date0 + "'"
+                              + " and eod1.DATE = '" + date1 + "'"
+                              + " and eod2.DATE = '" + date2 + "'"
+                              + " and eod_2.CLOSE_PRICE < eod_2.OPEN_PRICE"  //negative
+                              + " and eod_1.CLOSE_PRICE < eod_1.OPEN_PRICE"  //negative
+                              + " and eod0.CLOSE_PRICE < eod0.OPEN_PRICE"  //negative
+                              + " and eod1.CLOSE_PRICE < eod1.OPEN_PRICE" // negative
+                              + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive   
+                              + " and (eod2.OPEN_PRICE = eod2.LOW_PRICE) " // main condition                
+                              + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
+            return GetResult(sqlCommand);
+        }
     }
 }
