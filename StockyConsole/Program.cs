@@ -74,6 +74,9 @@ namespace StockyConsole
                     case 'a':
                         OpenCandleStickPattern(CandleStickPattern.MyChoice3Negative2Postive, date_2, date_1, date0, date1, date2);
                         break;
+                    case 'b':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice2Negative3Postive, date_2, date_1, date0, date1, date2);
+                        break;
 
                 }
             }
@@ -91,6 +94,9 @@ namespace StockyConsole
                 case CandleStickPattern.MyChoice3Negative2Postive:
                     stockSymbols = new DatabaseProcessor().MyChoice3Negative2Postive(date_2, date_1, date0, date1, date2);
                     break;
+                case CandleStickPattern.MyChoice2Negative3Postive:
+                    stockSymbols = new DatabaseProcessor().MyChoice2Negative3Postive(date_2, date_1, date0, date1, date2);
+                    break;
 
 
             }
@@ -105,6 +111,7 @@ namespace StockyConsole
             Console.WriteLine("==============");
             Console.WriteLine("i = Inverted Hammer");
             Console.WriteLine("a = 3 negative 2 positive");
+            Console.WriteLine("b = 2 negative 3 positive");
             Console.WriteLine("==============");
             Console.WriteLine("c = clear screen");
             Console.WriteLine("q = quit or exit");
@@ -112,6 +119,7 @@ namespace StockyConsole
 
         private static void OpenURLs(List<string> symbols)
         {
+            if(symbols != null)
             foreach (var symbol in symbols)
             {
                 var url = "http://nseguide.com/charts.php?name=" + symbol;
@@ -185,6 +193,6 @@ namespace StockyConsole
 
 
         MyChoice3Negative2Postive = 101,
-        MyChoiceTwo = 102,
+        MyChoice2Negative3Postive = 102,
     }
 }
