@@ -100,7 +100,7 @@ namespace StockyConsole
             return result;
 
         }
-
+        
         private List<string> GetResult(string sqlCommand)
         {
             SqlConnection conn = new SqlConnection(connString);
@@ -211,6 +211,30 @@ namespace StockyConsole
                               + " and eod1.CLOSE_PRICE < eod1.OPEN_PRICE" // negative
                               + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive   
                               + " and (eod2.OPEN_PRICE = eod2.LOW_PRICE) " // main condition                
+                              + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
+            return GetResult(sqlCommand);
+        }
+
+
+        internal List<string> MyChoiceVolumn(string date_2, string date_1, string date0, string date1, string date2)
+        {
+            string sqlCommand = "select distinct top (20) eod2.SYMBOL, (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) / (eod1.CLOSE_PRICE * eod1.NET_TRDQTY) from eod eod1, eod eod2 "
+                              + " where eod1.SYMBOL = eod2.SYMBOL"
+                              + " and eod1.DATE = '" + date1 + "'"
+                              + " and eod2.DATE = '" + date2 + "'"
+                              + " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
+                              + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive               
+                              + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) / (eod1.CLOSE_PRICE * eod1.NET_TRDQTY) desc"; //order by
+            return GetResult(sqlCommand);
+        }
+
+
+        internal List<string> MyChoicePriceVolumn(string date_2, string date_1, string date0, string date1, string date2)
+        {
+            string sqlCommand = "select distinct top (20) eod2.SYMBOL, (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) from eod eod2 "
+                              + " where "
+                              + " eod2.DATE = '" + date2 + "'"
+                              + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive               
                               + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
             return GetResult(sqlCommand);
         }

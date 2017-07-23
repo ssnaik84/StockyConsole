@@ -80,6 +80,12 @@ namespace StockyConsole
                     case 'c':
                         OpenCandleStickPattern(CandleStickPattern.MyChoice4Negative1Postive, date_2, date_1, date0, date1, date2);
                         break;
+                    case 'd':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoiceVolumnRatio, date_2, date_1, date0, date1, date2);
+                        break;
+                    case 'e':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoicePriceVolumn, date_2, date_1, date0, date1, date2);
+                        break;
 
                 }
             }
@@ -103,6 +109,12 @@ namespace StockyConsole
                 case CandleStickPattern.MyChoice4Negative1Postive:
                     stockSymbols = new DatabaseProcessor().MyChoice4Negative1Postive(date_2, date_1, date0, date1, date2);
                     break;
+                case CandleStickPattern.MyChoiceVolumnRatio:
+                    stockSymbols = new DatabaseProcessor().MyChoiceVolumn(date_2, date_1, date0, date1, date2);
+                    break;
+                case CandleStickPattern.MyChoicePriceVolumn:
+                    stockSymbols = new DatabaseProcessor().MyChoicePriceVolumn(date_2, date_1, date0, date1, date2);
+                    break;
 
 
             }
@@ -119,6 +131,8 @@ namespace StockyConsole
             Console.WriteLine("a = 3 negative 2 positive");
             Console.WriteLine("b = 2 negative 3 positive");
             Console.WriteLine("c = 4 negative 1 positive");
+            Console.WriteLine("d = Volumn Ratio");
+            Console.WriteLine("e = Price * Volumn");
             Console.WriteLine("==============");
             Console.WriteLine("z = clear screen");
             Console.WriteLine("q = quit or exit");
@@ -202,5 +216,8 @@ namespace StockyConsole
         MyChoice3Negative2Postive = 101,
         MyChoice2Negative3Postive = 102,
         MyChoice4Negative1Postive = 103,
+        MyChoiceVolumnRatio = 104,
+        MyChoicePriceVolumn = 105,
+
     }
 }
