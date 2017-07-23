@@ -19,6 +19,9 @@ namespace StockyConsole
 
         string zipFileNameFormat = "PR{0}.zip";
         string csvFileNameFormat = "Pd{0}.csv";
+
+        string txtFilePath = "C:\\Users\\Swapnil\\Documents\\GitHubVisualStudio\\StockyConsole\\NSE-EOD\\Eod\\";
+        string txtFileNameFormat = "{0}.txt";
         string fileName = "";
 
 
@@ -117,9 +120,42 @@ namespace StockyConsole
             return true;
         }
 
+        internal bool ReadNSEEODFileAndInsertData(DateTime date)
+        {
+            string dateString = date.ToString("ddMMMyyyy");
+            fileName = string.Format(txtFileNameFormat, dateString);
 
+            IList<string> lines = null;
+            try
+            {
+                lines = File.ReadLines(txtFilePath + fileName).ToList();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
 
+            var objDatabase = new DatabaseProcessor();
 
+            foreach (string line in lines)
+            {
+                if (line != null && line.Contains(",") && line.Trim().Count() > 0)
+                {
+                    var fields = line.Split(',');
+                    if (fields.Count() > 0)
+                    {
+                        //if (fields[0].Trim().Equals("MKT") || fields[0].Trim().Equals("")) continue;
+
+                        objDatabase.InsertEOD(date, "", "", fields[0].Trim(), "", 0, Convert.ToDouble(fields[2].Trim()),
+                            Convert.ToDouble(fields[3].Trim()), Convert.ToDouble(fields[4].Trim()), Convert.ToDouble(fields[5].Trim()), 0,
+                            Convert.ToDouble(fields[6].Trim()), "", "", 0, 0, 0);
+                    }
+                }
+                Console.WriteLine(line);
+            }
+
+            return true;
+        }
     }
     
 }

@@ -13,8 +13,8 @@ namespace StockyConsole
         string connString = "Server=.\\sqlexpress;Database=nsedb;Trusted_Connection=True;";    //mysql: "Server=localhost;Database=nsedb;Uid=root;Pwd=dattagiri;";
 
         public bool InsertEOD(DateTime DATE, string MKT, string SERIES, string SYMBOL, string SECURITY,
-                              double PREV_CL_PR, double OPEN_PRICE, double HIGH_PRICE, double LOW_PRICE, double CLOSE_PRICE,
-                              double NET_TRDVAL, double NET_TRDQTY, string IND_SEC, string CORP_IND, long TRADES, double HI_52_WK, double LO_52_WK)
+                              double? PREV_CL_PR, double OPEN_PRICE, double HIGH_PRICE, double LOW_PRICE, double CLOSE_PRICE,
+                              double? NET_TRDVAL, double NET_TRDQTY, string IND_SEC, string CORP_IND, long? TRADES, double? HI_52_WK, double? LO_52_WK)
         {
             string sqlCommand = "insert into EOD (DATE,MKT,SERIES,SYMBOL,SECURITY,PREV_CL_PR,OPEN_PRICE,HIGH_PRICE,LOW_PRICE,CLOSE_PRICE,NET_TRDVAL,NET_TRDQTY,IND_SEC,CORP_IND,TRADES,HI_52_WK,LO_52_WK)"
                        + " values (@DATE,@MKT,@SERIES,@SYMBOL,@SECURITY,@PREV_CL_PR,@OPEN_PRICE,@HIGH_PRICE,@LOW_PRICE,@CLOSE_PRICE,@NET_TRDVAL,@NET_TRDQTY,@IND_SEC,@CORP_IND,@TRADES,@HI_52_WK,@LO_52_WK)";
@@ -59,6 +59,7 @@ namespace StockyConsole
             }
             return true;
         }
+        
 
         public List<string> GetLatestDates(int numberOfDates)
         {
@@ -100,22 +101,8 @@ namespace StockyConsole
 
         }
 
-        internal List<string> InvertedHammerStocks(string date_2, string date_1, string date0, string date1, string date2)
+        private List<string> GetResult(string sqlCommand)
         {
-            string sqlCommand = "select distinct eod0.SYMBOL from eod eod_2, eod eod_1, eod eod0, eod eod1, eod eod2 "
-                                + " where eod_2.SYMBOL = eod_1.SYMBOL and eod_1.SYMBOL = eod0.SYMBOL and eod0.SYMBOL = eod1.SYMBOL and eod1.SYMBOL = eod2.SYMBOL"
-                                + " and eod_2.DATE = '"+ date_2 +"'"
-                                + " and eod_1.DATE = '" + date_1 + "'"
-                                + " and eod0.DATE = '" + date0 + "'"
-                                + " and eod1.DATE = '" + date1 + "'"
-                                + " and eod2.DATE = '" + date2 + "'"
-                                + " and eod_2.CLOSE_PRICE < eod_2.OPEN_PRICE"  //negative
-                                + " and eod_1.CLOSE_PRICE < eod_1.OPEN_PRICE"  //negative
-                                + " and (((eod0.HIGH_PRICE - eod0.LOW_PRICE) > 3 * (eod0.OPEN_PRICE - eod0.CLOSE_PRICE)) AND((eod0.HIGH_PRICE - eod0.CLOSE_PRICE) / (.001 + eod0.HIGH_PRICE - eod0.LOW_PRICE) > 0.6) AND((eod0.HIGH_PRICE - eod0.OPEN_PRICE) / (.001 + eod0.HIGH_PRICE - eod0.LOW_PRICE) > 0.6))"
-                                //inverted hammer"
-                                + " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
-                                + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE"; // positive
-
             SqlConnection conn = new SqlConnection(connString);
 
             // MySqlConnection conn = new MySqlConnection(connString);
@@ -146,8 +133,44 @@ namespace StockyConsole
                 if (conn != null && conn.State != System.Data.ConnectionState.Closed)
                     conn.Close();
             }
-            return result;
 
+            return result;
+        }
+
+        internal List<string> InvertedHammer(string date_2, string date_1, string date0, string date1, string date2)
+        {
+            string sqlCommand = "select distinct eod0.SYMBOL from eod eod_2, eod eod_1, eod eod0, eod eod1, eod eod2 "
+                                + " where eod_2.SYMBOL = eod_1.SYMBOL and eod_1.SYMBOL = eod0.SYMBOL and eod0.SYMBOL = eod1.SYMBOL and eod1.SYMBOL = eod2.SYMBOL"
+                                + " and eod_2.DATE = '"+ date_2 +"'"
+                                + " and eod_1.DATE = '" + date_1 + "'"
+                                + " and eod0.DATE = '" + date0 + "'"
+                                + " and eod1.DATE = '" + date1 + "'"
+                                + " and eod2.DATE = '" + date2 + "'"
+                                + " and eod_2.CLOSE_PRICE < eod_2.OPEN_PRICE"  //negative
+                                + " and eod_1.CLOSE_PRICE < eod_1.OPEN_PRICE"  //negative
+                                + " and (((eod0.HIGH_PRICE - eod0.LOW_PRICE) > 3 * (eod0.OPEN_PRICE - eod0.CLOSE_PRICE)) AND((eod0.HIGH_PRICE - eod0.CLOSE_PRICE) / (.001 + eod0.HIGH_PRICE - eod0.LOW_PRICE) > 0.6) AND((eod0.HIGH_PRICE - eod0.OPEN_PRICE) / (.001 + eod0.HIGH_PRICE - eod0.LOW_PRICE) > 0.6))"
+                                //inverted hammer"
+                                + " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
+                                + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE"; // positive            
+            return GetResult(sqlCommand);
+        }
+
+        internal List<string> MyChoice3Negative2Postive(string date_2, string date_1, string date0, string date1, string date2)
+        {
+            string sqlCommand = "select distinct eod0.SYMBOL from eod eod_2, eod eod_1, eod eod0, eod eod1, eod eod2 "
+                                + " where eod_2.SYMBOL = eod_1.SYMBOL and eod_1.SYMBOL = eod0.SYMBOL and eod0.SYMBOL = eod1.SYMBOL and eod1.SYMBOL = eod2.SYMBOL"
+                                + " and eod_2.DATE = '" + date_2 + "'"
+                                + " and eod_1.DATE = '" + date_1 + "'"
+                                + " and eod0.DATE = '" + date0 + "'"
+                                + " and eod1.DATE = '" + date1 + "'"
+                                + " and eod2.DATE = '" + date2 + "'"
+                                + " and eod_2.CLOSE_PRICE < eod_2.OPEN_PRICE"  //negative
+                                + " and eod_1.CLOSE_PRICE < eod_1.OPEN_PRICE"  //negative
+                                + " and eod0.CLOSE_PRICE < eod0.OPEN_PRICE"  //negative
+                                + " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
+                                + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive   
+                                + " and (eod1.OPEN_PRICE = eod1.LOW_PRICE OR eod2.OPEN_PRICE = eod2.LOW_PRICE) "; // main condition                
+            return GetResult(sqlCommand);
         }
     }
 }

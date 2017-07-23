@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,10 +27,13 @@ namespace StockyConsole
             {
                 Console.WriteLine("start date > end date, no need to update");
                 needToUpdateDB = false;
-            }            
-            
-            if(needToUpdateDB)
-                DownloadAndSaveDB(startDate, endDate);
+            }
+
+            if (needToUpdateDB)
+            {
+                //DownloadAndSaveDB(startDate, endDate);
+                SaveFromJarDB(startDate, endDate);
+            }
 
 
             //get latest 5 dates
@@ -51,13 +55,59 @@ namespace StockyConsole
                 return;
             }
 
+            CleanScreen();
 
-            OpenInvertedHammer(date_2, date_1, date0, date1, date2);
+            while (true)
+            {
+                var keyinfo = Console.ReadKey();
+
+                switch(keyinfo.KeyChar)
+                {
+                    case 'q':
+                        return;
+                    case 'c':
+                        CleanScreen();
+                        break;
+                    case 'i':
+                        OpenCandleStickPattern(CandleStickPattern.InvertedHammer, date_2, date_1, date0, date1, date2);
+                        break;
+                    case 'a':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice3Negative2Postive, date_2, date_1, date0, date1, date2);
+                        break;
+
+                }
+            }
+            
+        }
+
+        private static void OpenCandleStickPattern(CandleStickPattern pattern, string date_2, string date_1, string date0, string date1, string date2)
+        {
+            List<string> stockSymbols = null;
+            switch (pattern)
+            {
+                case CandleStickPattern.InvertedHammer:
+                    stockSymbols = new DatabaseProcessor().InvertedHammer(date_2, date_1, date0, date1, date2);
+                    break;
+                case CandleStickPattern.MyChoice3Negative2Postive:
+                    stockSymbols = new DatabaseProcessor().MyChoice3Negative2Postive(date_2, date_1, date0, date1, date2);
+                    break;
 
 
+            }
+            //open urls in browsers
+            OpenURLs(stockSymbols);
+        }
 
-
-            Console.ReadKey();
+        private static void CleanScreen()
+        {
+            Console.Clear();
+            Console.WriteLine("Menu");
+            Console.WriteLine("==============");
+            Console.WriteLine("i = Inverted Hammer");
+            Console.WriteLine("a = 3 negative 2 positive");
+            Console.WriteLine("==============");
+            Console.WriteLine("c = clear screen");
+            Console.WriteLine("q = quit or exit");
         }
 
         private static void OpenURLs(List<string> symbols)
@@ -65,17 +115,35 @@ namespace StockyConsole
             foreach (var symbol in symbols)
             {
                 var url = "http://nseguide.com/charts.php?name=" + symbol;
-                System.Diagnostics.Process.Start(url);
+                //System.Diagnostics.Process.Start(url);
+                Process.Start("chrome", url);
+
             }
         }
 
-        private static void OpenInvertedHammer(string date_2, string date_1, string date0, string date1, string date2)
-        {
-            List<string> stockSymbols = new DatabaseProcessor().InvertedHammerStocks(date_2, date_1, date0, date1, date2);
 
-            //open urls in browsers
-            OpenURLs(stockSymbols);
+        private static void SaveFromJarDB(DateTime startDate, DateTime endDate)
+        {
+            var objDownloader = new BhavcopyDownloader();
+
+            var allweekdays = new List<DateTime>();
+            while (endDate >= startDate)
+            {
+                if (startDate.DayOfWeek >= DayOfWeek.Monday && startDate.DayOfWeek <= DayOfWeek.Friday)
+                    allweekdays.Add(startDate);
+
+                startDate = startDate.AddDays(1);
+            }
+            
+            //read file and insert data
+            foreach (var date in allweekdays)
+            {
+                objDownloader.ReadNSEEODFileAndInsertData(date);
+            }
         }
+
+
+
 
         private static void DownloadAndSaveDB(DateTime startDate, DateTime endDate)
         {
@@ -109,5 +177,14 @@ namespace StockyConsole
             }
         }
 
+    }
+
+    public enum CandleStickPattern
+    {
+        InvertedHammer = 1,
+
+
+        MyChoice3Negative2Postive = 101,
+        MyChoiceTwo = 102,
     }
 }
