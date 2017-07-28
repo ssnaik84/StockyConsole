@@ -71,6 +71,9 @@ namespace StockyConsole
                     case 'i':
                         OpenCandleStickPattern(CandleStickPattern.InvertedHammer, date_2, date_1, date0, date1, date2);
                         break;
+                    case 'h':
+                        OpenCandleStickPattern(CandleStickPattern.Hammer, date_2, date_1, date0, date1, date2);
+                        break;
                     case 'a':
                         OpenCandleStickPattern(CandleStickPattern.MyChoice3Negative2Postive, date_2, date_1, date0, date1, date2);
                         break;
@@ -86,6 +89,9 @@ namespace StockyConsole
                     case 'e':
                         OpenCandleStickPattern(CandleStickPattern.MyChoicePriceVolumn, date_2, date_1, date0, date1, date2);
                         break;
+                    case 'f':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice2Positive, date_2, date_1, date0, date1, date2);
+                        break;
 
                 }
             }
@@ -99,6 +105,9 @@ namespace StockyConsole
             {
                 case CandleStickPattern.InvertedHammer:
                     stockSymbols = new DatabaseProcessor().InvertedHammer(date_2, date_1, date0, date1, date2);
+                    break;
+                case CandleStickPattern.Hammer:
+                    stockSymbols = new DatabaseProcessor().Hammer(date_2, date_1, date0, date1, date2);
                     break;
                 case CandleStickPattern.MyChoice3Negative2Postive:
                     stockSymbols = new DatabaseProcessor().MyChoice3Negative2Postive(date_2, date_1, date0, date1, date2);
@@ -115,6 +124,9 @@ namespace StockyConsole
                 case CandleStickPattern.MyChoicePriceVolumn:
                     stockSymbols = new DatabaseProcessor().MyChoicePriceVolumn(date_2, date_1, date0, date1, date2);
                     break;
+                case CandleStickPattern.MyChoice2Positive:
+                    stockSymbols = new DatabaseProcessor().MyChoice2Positive(date_2, date_1, date0, date1, date2);
+                    break;
 
 
             }
@@ -128,11 +140,13 @@ namespace StockyConsole
             Console.WriteLine("Menu");
             Console.WriteLine("==============");
             Console.WriteLine("i = Inverted Hammer");
+            Console.WriteLine("h = Hammer");
             Console.WriteLine("a = 3 negative 2 positive");
             Console.WriteLine("b = 2 negative 3 positive");
             Console.WriteLine("c = 4 negative 1 positive");
             Console.WriteLine("d = Volumn Ratio");
             Console.WriteLine("e = Price * Volumn");
+            Console.WriteLine("f = :|^");
             Console.WriteLine("==============");
             Console.WriteLine("z = clear screen");
             Console.WriteLine("q = quit or exit");
@@ -211,6 +225,7 @@ namespace StockyConsole
     public enum CandleStickPattern
     {
         InvertedHammer = 1,
+        Hammer = 2,
 
 
         MyChoice3Negative2Postive = 101,
@@ -218,6 +233,7 @@ namespace StockyConsole
         MyChoice4Negative1Postive = 103,
         MyChoiceVolumnRatio = 104,
         MyChoicePriceVolumn = 105,
+        MyChoice2Positive = 106,
 
     }
 }
