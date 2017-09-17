@@ -279,5 +279,19 @@ namespace StockyConsole
                               + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
             return GetResult(sqlCommand);
         }
+
+        internal List<string> MyStockListByPriceVolumn(string date, int cnt)
+        {
+            string sqlCommand = "SELECT * FROM ("
+                                + " SELECT TOP 20  SYMBOL, cnt FROM ("
+                                + "  SELECT TOP(20 * "+ cnt +")  SYMBOL, (CLOSE_PRICE * NET_TRDQTY) cnt FROM eod"
+                                + " where[DATE] = '"+ date +"'"
+                                + " ORDER BY(CLOSE_PRICE * NET_TRDQTY) desc"
+                                + " ) t2"
+                                + " ORDER BY cnt ASC"
+                                + " ) t1"
+                                + " ORDER BY cnt DESC"; //order by 
+            return GetResult(sqlCommand);
+        }
     }
 }

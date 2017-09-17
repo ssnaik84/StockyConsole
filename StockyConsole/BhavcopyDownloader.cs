@@ -22,7 +22,7 @@ namespace StockyConsole
 
         string txtFilePath = "C:\\Users\\Swapnil\\Documents\\GitHubVisualStudio\\StockyConsole\\NSE-EOD\\Eod\\";
         string txtFileNameFormat = "{0}.txt";
-        string fileName = "";
+        string fileName = ""; 
 
 
         public bool Download(DateTime date)

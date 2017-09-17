@@ -6,3 +6,11 @@ c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsol
 c:\users\swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\obj\Debug\StockyConsole.pdb
 C:\Users\Swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\MySql.Data.dll
 C:\Users\Swapnil\documents\visual studio 2015\Projects\NaateeStocky\StockyConsole\StockyConsole\bin\Debug\MySql.Data.xml
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\bin\Debug\StockyConsole.exe.config
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\bin\Debug\StockyConsole.exe
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\bin\Debug\StockyConsole.pdb
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\bin\Debug\MySql.Data.dll
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\bin\Debug\MySql.Data.xml
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\obj\Debug\StockyConsole.exe
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\obj\Debug\StockyConsole.pdb
+C:\Users\Swapnil\Documents\GitHubVisualStudio\StockyConsole\StockyConsole\obj\Debug\StockyConsole.csprojResolveAssemblyReference.cache

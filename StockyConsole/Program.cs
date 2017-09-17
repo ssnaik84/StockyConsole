@@ -23,7 +23,7 @@ namespace StockyConsole
 
             var needToUpdateDB = true;
 
-            if(startDate > endDate)
+            if (startDate > endDate)
             {
                 Console.WriteLine("start date > end date, no need to update");
                 needToUpdateDB = false;
@@ -40,7 +40,7 @@ namespace StockyConsole
             latestDates = new DatabaseProcessor().GetLatestDates(5);
 
             string date_2, date_1, date0, date1, date2;
-            if(latestDates.Count == 5)
+            if (latestDates.Count == 5)
             {
                 date2 = latestDates[0];
                 date1 = latestDates[1];
@@ -61,7 +61,7 @@ namespace StockyConsole
             {
                 var keyinfo = Console.ReadKey();
 
-                switch(keyinfo.KeyChar)
+                switch (keyinfo.KeyChar)
                 {
                     case 'q':
                         return;
@@ -69,36 +69,62 @@ namespace StockyConsole
                         CleanScreen();
                         break;
                     case 'i':
-                        OpenCandleStickPattern(CandleStickPattern.InvertedHammer, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.InvertedHammer, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'h':
-                        OpenCandleStickPattern(CandleStickPattern.Hammer, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.Hammer, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'a':
-                        OpenCandleStickPattern(CandleStickPattern.MyChoice3Negative2Postive, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice3Negative2Postive, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'b':
-                        OpenCandleStickPattern(CandleStickPattern.MyChoice2Negative3Postive, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice2Negative3Postive, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'c':
-                        OpenCandleStickPattern(CandleStickPattern.MyChoice4Negative1Postive, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice4Negative1Postive, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'd':
-                        OpenCandleStickPattern(CandleStickPattern.MyChoiceVolumnRatio, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.MyChoiceVolumnRatio, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'e':
-                        OpenCandleStickPattern(CandleStickPattern.MyChoicePriceVolumn, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.MyChoicePriceVolumn, date_2, date_1, date0, date1, date2, 0);
                         break;
                     case 'f':
-                        OpenCandleStickPattern(CandleStickPattern.MyChoice2Positive, date_2, date_1, date0, date1, date2);
+                        OpenCandleStickPattern(CandleStickPattern.MyChoice2Positive, date_2, date_1, date0, date1, date2, 0);
+                        break;
+                    case 't':
+                        {
+                            OpenSubMenu(date2);
+                            
+                        } //case t 
                         break;
 
                 }
             }
-            
         }
 
-        private static void OpenCandleStickPattern(CandleStickPattern pattern, string date_2, string date_1, string date0, string date1, string date2)
+        private static void OpenSubMenu(string date)
+        {
+            while (true)
+            {
+                Console.WriteLine("integer value for page count. and q = quit.");
+                var key = Console.ReadKey();
+                int pagecnt = 0;
+                int.TryParse(key.KeyChar.ToString(), out pagecnt);
+                pagecnt = (pagecnt == 0) ? 1 : pagecnt;
+
+                OpenCandleStickPattern(CandleStickPattern.MyStockListByPriceVolumn, date, date, date, date, date, pagecnt);
+
+                switch (key.KeyChar)
+                {
+                    case 'q':
+                        return;
+                }
+        }
+
+    }
+
+        private static void OpenCandleStickPattern(CandleStickPattern pattern, string date_2, string date_1, string date0, string date1, string date2, int pageCnt)
         {
             List<string> stockSymbols = null;
             switch (pattern)
@@ -108,6 +134,9 @@ namespace StockyConsole
                     break;
                 case CandleStickPattern.Hammer:
                     stockSymbols = new DatabaseProcessor().Hammer(date_2, date_1, date0, date1, date2);
+                    break;
+                case CandleStickPattern.MyStockListByPriceVolumn:
+                    stockSymbols = new DatabaseProcessor().MyStockListByPriceVolumn(date_2, pageCnt);
                     break;
                 case CandleStickPattern.MyChoice3Negative2Postive:
                     stockSymbols = new DatabaseProcessor().MyChoice3Negative2Postive(date_2, date_1, date0, date1, date2);
@@ -141,6 +170,7 @@ namespace StockyConsole
             Console.WriteLine("==============");
             Console.WriteLine("i = Inverted Hammer");
             Console.WriteLine("h = Hammer");
+            Console.WriteLine("t = open top 20 by 20 orderby PriceVolumn");
             Console.WriteLine("a = 3 negative 2 positive");
             Console.WriteLine("b = 2 negative 3 positive");
             Console.WriteLine("c = 4 negative 1 positive");
@@ -226,6 +256,7 @@ namespace StockyConsole
     {
         InvertedHammer = 1,
         Hammer = 2,
+        MyStockListByPriceVolumn = 3,
 
 
         MyChoice3Negative2Postive = 101,
@@ -234,6 +265,7 @@ namespace StockyConsole
         MyChoiceVolumnRatio = 104,
         MyChoicePriceVolumn = 105,
         MyChoice2Positive = 106,
+        
 
     }
 }
