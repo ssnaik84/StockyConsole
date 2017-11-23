@@ -92,6 +92,9 @@ namespace StockyConsole
                     case 'f':
                         OpenCandleStickPattern(CandleStickPattern.MyChoice2Positive, date_2, date_1, date0, date1, date2, 0);
                         break;
+                    case 'g':
+                        OpenCandleStickPattern(CandleStickPattern.MyChoiceJustBreaking, date_2, date_1, date0, date1, date2, 0);
+                        break;
                     case 't':
                         {
                             OpenSubMenu(date2);
@@ -155,6 +158,9 @@ namespace StockyConsole
                     break;
                 case CandleStickPattern.MyChoice2Positive:
                     stockSymbols = new DatabaseProcessor().MyChoice2Positive(date_2, date_1, date0, date1, date2);
+                    break;
+                case CandleStickPattern.MyChoiceJustBreaking:
+                    stockSymbols = new DatabaseProcessor().MyChoiceJustBreaking(date_2, date_1, date0, date1, date2);
                     break;
 
 
@@ -265,6 +271,7 @@ namespace StockyConsole
         MyChoiceVolumnRatio = 104,
         MyChoicePriceVolumn = 105,
         MyChoice2Positive = 106,
+        MyChoiceJustBreaking = 107,
         
 
     }
