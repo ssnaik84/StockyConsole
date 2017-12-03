@@ -178,6 +178,20 @@ namespace StockyConsole
             return GetResult(sqlCommand);
         }
 
+        internal List<string> MaxHighPriceInHistory(string date_2, string date_1, string date0, string date1, string date2)
+        {
+
+            string sqlCommand = "select distinct top(40) eod2.SYMBOL, eod2.CLOSE_PRICE * eod2.NET_TRDQTY from MaxHighPriceInHistory maxeod, eod eod1, eod eod2 "
+                              + " where maxeod.SYMBOL = eod1.SYMBOL and eod1.SYMBOL = eod2.SYMBOL"
+                              + " and eod1.DATE = '" + date1 + "'"
+                              + " and eod2.DATE = '" + date2 + "'"
+                              + " and eod1.CLOSE_PRICE < maxeod.MAX_PRICE and eod2.CLOSE_PRICE > maxeod.MAX_PRICE" //main condition
+                              //+ " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
+                              + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive               
+                              + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
+            return GetResult(sqlCommand);
+        }
+
         internal List<string> InvertedHammer(string date_2, string date_1, string date0, string date1, string date2)
         {
             string sqlCommand = "select distinct top(20)  eod2.SYMBOL, eod2.CLOSE_PRICE * eod2.NET_TRDQTY from eod eod_2, eod eod_1, eod eod0, eod eod1, eod eod2 "

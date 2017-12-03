@@ -20,6 +20,15 @@ CREATE TABLE eod (
 	LO_52_WK decimal(8,2) 
 );
 
+//VIEW
+
+create view [dbo].[MaxHighPriceInHistory]
+AS
+select distinct eod.SYMBOL, max(HIGH_PRICE) MAX_PRICE from eod
+where date between (select max(date) - 20 from eod) and (select max(date) - 1 from eod)
+group by eod.SYMBOL
+GO
+
 
 // mysql
 

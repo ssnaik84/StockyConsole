@@ -95,6 +95,9 @@ namespace StockyConsole
                     case 'g':
                         OpenCandleStickPattern(CandleStickPattern.MyChoiceJustBreaking, date_2, date_1, date0, date1, date2, 0);
                         break;
+                    case 'x':
+                        OpenCandleStickPattern(CandleStickPattern.MaxHighPriceInHistory, date_2, date_1, date0, date1, date2, 0);
+                        break;
                     case 't':
                         {
                             OpenSubMenu(date2);
@@ -162,7 +165,9 @@ namespace StockyConsole
                 case CandleStickPattern.MyChoiceJustBreaking:
                     stockSymbols = new DatabaseProcessor().MyChoiceJustBreaking(date_2, date_1, date0, date1, date2);
                     break;
-
+                case CandleStickPattern.MaxHighPriceInHistory:
+                    stockSymbols = new DatabaseProcessor().MaxHighPriceInHistory(date_2, date_1, date0, date1, date2);
+                    break;
 
             }
             //open urls in browsers
@@ -183,6 +188,8 @@ namespace StockyConsole
             Console.WriteLine("d = Volumn Ratio");
             Console.WriteLine("e = Price * Volumn");
             Console.WriteLine("f = :|^");
+            Console.WriteLine("g = just breaking");
+            Console.WriteLine("x = breakout in last 100 days");
             Console.WriteLine("==============");
             Console.WriteLine("z = clear screen");
             Console.WriteLine("q = quit or exit");
@@ -265,13 +272,14 @@ namespace StockyConsole
         MyStockListByPriceVolumn = 3,
 
 
-        MyChoice3Negative2Postive = 101,
-        MyChoice2Negative3Postive = 102,
-        MyChoice4Negative1Postive = 103,
+        MyChoice3Negative2Postive = 101,  //**
+        MyChoice2Negative3Postive = 102,  //**
+        MyChoice4Negative1Postive = 103,  //***
         MyChoiceVolumnRatio = 104,
         MyChoicePriceVolumn = 105,
         MyChoice2Positive = 106,
         MyChoiceJustBreaking = 107,
+        MaxHighPriceInHistory = 108,  //****
         
 
     }
