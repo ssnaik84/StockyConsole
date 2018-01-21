@@ -33,6 +33,9 @@ namespace StockyConsole
             {
                 //DownloadAndSaveDB(startDate, endDate);
                 SaveFromJarDB(startDate, endDate);
+
+                //update summary table - for all time high and low price
+                UpdateSummaryTable();
             }
 
 
@@ -98,6 +101,9 @@ namespace StockyConsole
                     case 'x':
                         OpenCandleStickPattern(CandleStickPattern.MaxHighPriceInHistory, date_2, date_1, date0, date1, date2, 0);
                         break;
+                    case 'p':
+                        OpenCandleStickPattern(CandleStickPattern.BreakoutPennyStocks, date_2, date_1, date0, date1, date2, 0);
+                        break;
                     case 't':
                         {
                             OpenSubMenu(date2);
@@ -107,6 +113,11 @@ namespace StockyConsole
 
                 }
             }
+        }
+
+        private static void UpdateSummaryTable()
+        {
+            new DatabaseProcessor().UpdateSummaryTable();
         }
 
         private static void OpenSubMenu(string date)
@@ -168,6 +179,9 @@ namespace StockyConsole
                 case CandleStickPattern.MaxHighPriceInHistory:
                     stockSymbols = new DatabaseProcessor().MaxHighPriceInHistory(date_2, date_1, date0, date1, date2);
                     break;
+                case CandleStickPattern.BreakoutPennyStocks:
+                    stockSymbols = new DatabaseProcessor().BreakoutPennyStocks(date_2, date_1, date0, date1, date2);
+                    break;
 
             }
             //open urls in browsers
@@ -190,6 +204,7 @@ namespace StockyConsole
             Console.WriteLine("f = :|^");
             Console.WriteLine("g = just breaking");
             Console.WriteLine("x = breakout in last 100 days");
+            Console.WriteLine("p = breakout penny stocks");
             Console.WriteLine("==============");
             Console.WriteLine("z = clear screen");
             Console.WriteLine("q = quit or exit");
@@ -280,7 +295,7 @@ namespace StockyConsole
         MyChoice2Positive = 106,
         MyChoiceJustBreaking = 107,
         MaxHighPriceInHistory = 108,  //****
-        
+        BreakoutPennyStocks = 109
 
     }
 }

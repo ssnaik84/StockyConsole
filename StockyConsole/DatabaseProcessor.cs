@@ -1,10 +1,8 @@
 ﻿//using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Transactions;
 
 namespace StockyConsole
 {
@@ -100,7 +98,47 @@ namespace StockyConsole
             return result;
 
         }
-        
+
+        internal void UpdateSummaryTable()
+        {
+            using (TransactionScope scope = new TransactionScope())
+            {
+                var isDeleted = RunDMLQuery("delete from summary");
+
+                if (isDeleted)
+                    RunDMLQuery("insert into summary (symbol, ALL_TIME_HIGH_PRICE, ALL_TIME_LOW_PRICE) select distinct SYMBOL, max(HIGH_PRICE), min(LOW_PRICE) from eod group by SYMBOL");
+            }
+        }
+
+        private bool RunDMLQuery(string sqlCommand)
+        {
+            SqlConnection conn = new SqlConnection(connString);
+
+            // MySqlConnection conn = new MySqlConnection(connString);
+            //MySqlDataReader reader = null;
+
+            try
+            {
+                conn.Open();
+                //MySqlCommand comm = conn.CreateCommand();
+                SqlCommand comm = conn.CreateCommand();
+                comm.CommandText = sqlCommand;
+
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (conn != null && conn.State != System.Data.ConnectionState.Closed)
+                    conn.Close();
+            }
+
+            return true;
+        }
+
         private List<string> GetResult(string sqlCommand)
         {
             SqlConnection conn = new SqlConnection(connString);
@@ -189,6 +227,21 @@ namespace StockyConsole
                               //+ " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
                               + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive               
                               + " order by (eod2.CLOSE_PRICE * eod2.NET_TRDQTY) desc"; //order by
+            return GetResult(sqlCommand);
+        }
+
+        //BreakoutPennyStocks 
+        internal List<string> BreakoutPennyStocks(string date_2, string date_1, string date0, string date1, string date2)
+        {
+
+            string sqlCommand = "select distinct top(40) eod2.SYMBOL, eod2.CLOSE_PRICE, eod2.NET_TRDQTY from MaxHighPriceInHistory maxeod, eod eod1, eod eod2 "
+                              + " where maxeod.SYMBOL = eod1.SYMBOL and eod1.SYMBOL = eod2.SYMBOL"
+                              + " and eod1.DATE = '" + date1 + "'"
+                              + " and eod2.DATE = '" + date2 + "'"
+                              + " and eod1.CLOSE_PRICE < maxeod.MAX_PRICE and eod2.CLOSE_PRICE > maxeod.MAX_PRICE" //main condition
+                                                                                                                   //+ " and eod1.CLOSE_PRICE > eod1.OPEN_PRICE" // positive
+                              + " and eod2.CLOSE_PRICE > eod2.OPEN_PRICE" // positive               
+                              + " order by eod2.CLOSE_PRICE asc, eod2.NET_TRDQTY desc"; //order by
             return GetResult(sqlCommand);
         }
 
