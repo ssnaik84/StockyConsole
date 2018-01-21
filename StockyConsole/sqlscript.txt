@@ -29,6 +29,20 @@ where date between (select max(date) - 20 from eod) and (select max(date) - 1 fr
 group by eod.SYMBOL
 GO
 
+//table
+
+CREATE TABLE [dbo].[summary](
+	[SYMBOL] [nvarchar](50) NULL,
+	[ALL_TIME_HIGH_PRICE] [decimal](8, 2) NULL,
+	[ALL_TIME_LOW_PRICE] [decimal](8, 2) NULL
+) ON [PRIMARY]
+
+GO
+
+//one time script
+insert into summary (symbol, ALL_TIME_HIGH_PRICE, ALL_TIME_LOW_PRICE) 
+select distinct SYMBOL, max(HIGH_PRICE), min(LOW_PRICE) from eod
+group by SYMBOL
 
 // mysql
 
