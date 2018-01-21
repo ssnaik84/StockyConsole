@@ -1,5 +1,15 @@
 ﻿// sql server
 
+//query
+select s.*, e.CLOSE_PRICE from summary s
+join eod e on s.SYMBOL = e.SYMBOL
+where e.DATE = '2018-01-19 00:00:00.000'
+and e.CLOSE_PRICE < (s.ALL_TIME_HIGH_PRICE * 0.6 )
+and e.CLOSE_PRICE > e.OPEN_PRICE
+order by e.CLOSE_PRICE * e.NET_TRDVAL desc
+
+
+
 CREATE TABLE eod (
 	[DATE] DATETIME,
 	MKT nvarchar(50) ,
